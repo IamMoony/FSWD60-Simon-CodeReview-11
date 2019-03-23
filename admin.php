@@ -84,8 +84,8 @@ $userRow = mysqli_fetch_array($res, MYSQLI_ASSOC);
 					<p><b>ZIP-Code:</b>'. $val["locationZIPCode"] .'</p>
 					<p><b>Address:</b><br>'. $val["locationAddress"] .'</p>
 					<hr>
-					<a class="btn btn-danger" href="update_restaurant.php?id='.$val["placeID"].'">Edit</a>
-					<a class="btn btn-danger" href="delete_restaurant.php?id='.$val["placeID"].'">Delete</a>
+					<a class="btn btn-danger" href="update_place.php?id='.$val["placeID"].'">Edit</a>
+					<a class="btn btn-danger" href="delete_place.php?id='.$val["placeID"].'">Delete</a>
 					</div>
 					</div>';
 				}

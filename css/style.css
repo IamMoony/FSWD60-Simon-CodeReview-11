@@ -1,11 +1,26 @@
-div {
+/* div {
 	border: 1px solid red;
-}
+} */
 body {
     margin-top: 80px;
     background-color: #7395AE;
     font-family: 'Open Sans', sans-serif;
 }
+.form {
+  width: 30%;
+  margin: 0 auto;
+}
+
+.form{
+      display: flex;
+      flex-direction: column;
+      margin: 0 auto;
+      width: 35%;
+    }
+
+    .header h1 {
+      text-align: center;
+    }
 
 /* Herosection Start */
 .jumbotron {

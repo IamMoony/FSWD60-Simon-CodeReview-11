@@ -1,4 +1,13 @@
-<?php require_once 'actions/db_connect.php';?>
+<?php require_once 'actions/db_connect.php';
+session_start();
+if(isset($_SESSION["user"]) == ""){
+	header("Location: login.php");
+	exit;
+}
+$res = mysqli_query($conn, "SELECT * FROM user WHERE userID =".$_SESSION['user']);
+$userRow = mysqli_fetch_array($res, MYSQLI_ASSOC);
+
+?>
 <!DOCTYPE html>
 <html>
 
@@ -19,9 +28,12 @@
 	<!-- Navbar Start -->
 	<nav class="navbar navbar-default navbar-fixed-top navbar-inverse">
 		<ul class="nav navbar-nav">
-			<li><a href="">Home</a></li>
-			<li><a href="">About</a></li>
-			<li><a href="">Contact</a></li>
+			<li><a href="index.php">Home</a></li>
+			<li><a href="restaurant.php">Restaurants</a></li>
+			<li><a href="event.php">Events</a></li>
+			<li><a href="search.php">Search</a></li>
+			<li><a href="">Your logged in as: <?php echo $userRow['userName']; ?></a></li>
+			<li><a href="logout.php?logout">Sign Out</a></li>
 		</ul>
 	</nav>
 	<!-- Navbar End -->
@@ -82,7 +94,42 @@
 				// echo "</div>";
 			?>
 		</div>
-	</div>
+	<hr>
+	<div class="col-lg-12 col-md-6 col-sm-12 location-heading">
+				<hr>
+				<h2>Places</h2>
+			</div>
+			<div class="col-lg-12 col-md-12 col-sm-12" id="places">
+				<p hidden></p>
+				<?php
+				$sql = "SELECT places.placeName, places.placeType, places.placeWebAddress, places.placeDescr, location.locationAddress, location.locationZIPCode, location.locationCity, location.locationImage
+				FROM places
+				INNER JOIN location ON places.fk_locationID = location.locationID;";
+
+				$result = mysqli_query($conn, $sql);
+				$rows = $result->fetch_all(MYSQLI_ASSOC);
+// Fetch Data
+				foreach($rows as $val) {
+					echo '<div class="media col-lg-3 col-md-6 col-sm-12">
+					<div class="media-left">
+					<hr>
+					<img class="media-object d-sm-none d-md-block" src='.$val["locationImage"].'>
+					</a>
+					<hr>
+					</div>
+					<div class="media-body col-lg-12 col-md-1 col-sm-12 media-text">
+					<h4 class="media-heading media-text">'. $val["placeName"] .'</h4>
+					<p><b>City:</b>'. $val["locationCity"] .'</p>
+					<p><b>ZIP-Code:</b>'. $val["locationZIPCode"] .'</p>
+					<p><b>Address:</b><br>'. $val["locationAddress"] .'</p>
+					<hr>
+					</div>
+					</div>';
+				}
+				// echo "</div>";
+				?>
+			</div>
+		</div>
 	<hr>
 	<!-- Maincontent End -->
 	<!-- Footer -->
@@ -132,7 +179,7 @@
 		</footer>
 		<!-- Footer -->
 
-		
+
 
 
 		<!-- <script type="text/javascript" src="js/script.js"></script> -->

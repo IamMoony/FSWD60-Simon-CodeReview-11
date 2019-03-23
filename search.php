@@ -57,48 +57,74 @@ $userRow = mysqli_fetch_array($res, MYSQLI_ASSOC);
 		<!-- Container Nav End -->
 
 		<!-- Maincontent Start -->
-
-		<div class="col-lg-12 col-md-12 col-sm-12 location-heading">
-			<hr>
-			<h2>Restaurants</h2>
-		</div>
-		<div class="col-lg-12 col-md-12 col-sm-12" id="restaurants">
-			<p hidden></p>
-			<?php
-			$sql = "SELECT restaurants.restaurantName, restaurants.restaurantTel, restaurants.restaurantDescr, restaurants.restaurantType, restaurants.restaurantWebAddress, location.locationZIPCode, location.locationCity, location.locationImage
-			FROM restaurants
-			INNER JOIN location ON restaurants.fk_locationID = location.locationID;";
-
-			$result = mysqli_query($conn, $sql);
-			$rows = $result->fetch_all(MYSQLI_ASSOC);
-// Fetch Data
-			foreach($rows as $val) {
-				echo '<div class="media col-lg-3 col-md-6 col-sm-12">
-				<div class="media-left d-none d-sm-block">
+		<div class="row row-wrapper">
+			<div class="col-lg-12 col-md-6 col-sm-12 location-heading">
 				<hr>
-				<a href='.$val["restaurantWebAddress"].'>
-				<img class="media-object" src='.$val["locationImage"].'>
-				</a>
-				<hr>
-				</div>
-				<div class="media-body col-lg-12 col-md-1 col-sm-12">
-				<h4 class="media-heading media-text">'.$val["restaurantName"] .'</h4>
-				<p><b>City:</b>'. $val["locationCity"] .'</p>
-				<p><b>ZIP-Code:</b>'. $val["locationZIPCode"] .'</p>
-				<p><b>Address:</b> <br>'. $val["locationAddress"] .'</p>
-				<p><b>Tel.:</b>'. $val["restaurantTel"] .'</p>
-				<p><b>Type: </b>'. $val["restaurantType"] .'</p>
-				<p><b>Website: </b><a href='.$val["restaurantWebAddress"].'$</a>'.$val["restaurantName"].'</p>
-				<hr>
-				</div>
-				</div>';
-			}
-				// echo "</div>";
-			?>
-
-		</div>
-	</div>
-	<hr>
+				<h2>Search</h2>
+			</div>
+			<div class="col-lg-12 col-md-12 col-sm-12"">
+				 <form id="test">
+        <div class="navbar-form" role="search">
+                    <div style="width: 60%;" >
+                    <input id="search" style="width: 50%;"  type="text" name="search" placeholder="Type To Search" value='' />  <i class="glyphicon glyphicon-search"></i>
+                    </div>
+            </div>
+        </form>
+            <hr>
+            </div>
+            <div id="content" class="row">
+              
+            </div>
+        </div>
+            <script>
+// Variable to hold request
+var request;
+// Bind to the submit event of our form
+$("#test").keyup(function(event){
+   // Prevent default posting of form - put here to work in case of errors
+   event.preventDefault();
+   // Abort any pending request
+   if (request) {
+       request.abort();
+   }
+   // setup some local variables
+   var $form = $(this);
+   // Let's select and cache all the fields
+   var $inputs = $form.find("input, select, button, textarea");//JULAN - always name all to be safe
+   // Serialize the data in the form
+   var serializedData = $form.serialize();
+   // Let's disable the inputs for the duration of the Ajax request.
+   // Note: we disable elements AFTER the form data has been serialized.
+   // Disabled form elements will not be serialized.
+   $inputs.prop("disabled", true);
+   // Fire off the request to /form.php ->JULAN or the php file you are working on
+   request = $.ajax({
+       url: "actions/a_search.php",
+       type: "post",
+       data: serializedData
+   });
+   // Callback handler that will be called on success
+   request.done(function (response, textStatus, jqXHR){
+       // Log a message to the console
+        document.getElementById("content").innerHTML=response;
+     });
+   // Callback handler that will be called on failure
+   request.fail(function (jqXHR, textStatus, errorThrown){
+       // Log the error to the console
+       /*console.error(
+           "The following error occurred: "+
+           textStatus, errorThrown,jqXHR
+       );*/
+   });
+   // Callback handler that will be called regardless
+   // if the request failed or succeeded
+   request.always(function () {
+       // Reenable the inputs
+       $inputs.prop("disabled", false);
+   });
+});
+</script>
+				
 	<!-- Maincontent End -->
 	<!-- Footer -->
 	<footer class="page-footer font-small blue pt-4">

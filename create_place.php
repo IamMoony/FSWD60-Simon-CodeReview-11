@@ -6,6 +6,7 @@
 </head>
 <body>
   <div class="col-lg-3">
+    <h1>Places</h1>
     <h2>Add Item Here</h2>
     <form class="form-horizontal" action="actions/a_create_place.php" method="POST">
 

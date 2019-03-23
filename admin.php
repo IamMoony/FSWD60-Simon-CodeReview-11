@@ -28,9 +28,9 @@ $userRow = mysqli_fetch_array($res, MYSQLI_ASSOC);
 	<!-- Navbar Start -->
 	<nav class="navbar navbar-default navbar-fixed-top navbar-inverse">
 		<ul class="nav navbar-nav">
-			<li><a href="">Home</a></li>
-			<li><a href="">About</a></li>
-			<li><a href="">Contact</a></li>
+			<li><a href="admin.php">Home</a></li>
+			<li><a href="restaurant.php">Restaurants</a></li>
+			<li><a href="event.php">Events</a></li>
 			<li><a href="">Your logged in as: <?php echo $userRow['userName']; ?></a></li>
 			<li><a href="logout.php?logout">Sign Out</a></li>
 		</ul>
